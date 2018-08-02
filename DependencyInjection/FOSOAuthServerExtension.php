@@ -101,6 +101,8 @@ class FOSOAuthServerExtension extends Extension
             $authorizeFormDefinition = $container->getDefinition('fos_oauth_server.authorize.form');
             $authorizeFormDefinition->setFactory([new Reference('form.factory'), 'createNamed']);
         }
+
+        $this->loadIntrospection($loader);
     }
 
     /**
@@ -140,6 +142,11 @@ class FOSOAuthServerExtension extends Extension
                 }
             }
         }
+    }
+
+    protected function loadIntrospection(XmlFileLoader $loader)
+    {
+        $loader->load('introspection.xml');
     }
 
     protected function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader)
