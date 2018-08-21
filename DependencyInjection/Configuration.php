@@ -82,6 +82,7 @@ class Configuration implements ConfigurationInterface
         $this->addAuthorizeSection($rootNode);
         $this->addServiceSection($rootNode);
         $this->addTemplateSection($rootNode);
+        $this->addIntrospectionSection($rootNode);
 
         return $treeBuilder;
     }
@@ -146,6 +147,26 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('engine')->defaultValue('twig')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addIntrospectionSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('introspection')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->arrayNode('allowed_clients')
+                                ->useAttributeAsKey('key')
+                                ->treatNullLike([])
+                                ->prototype('variable')->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()
